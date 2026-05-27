@@ -1,0 +1,15 @@
+<section class="hero compact">
+  <p class="eyebrow">Admin Panel</p>
+  <h1>Backend Modules</h1>
+  <p>Use these APIs from React, Postman, or another admin client.</p>
+</section>
+
+<section class="grid">
+  <% modules.forEach((module) => { %>
+    <article class="card">
+      <h2><%= module.name %></h2>
+      <p><%= module.action %></p>
+      <code><%= module.endpoint %></code>
+    </article>
+  <% }) %>
+</section>

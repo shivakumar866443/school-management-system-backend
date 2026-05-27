@@ -1,0 +1,14 @@
+<section class="hero">
+  <p class="eyebrow">Express.js + EJS + MongoDB + Mail</p>
+  <h1>School Backend API</h1>
+  <p>This is a separate backend project. The React static website is untouched.</p>
+</section>
+
+<section class="grid">
+  <% cards.forEach((card) => { %>
+    <article class="card">
+      <h2><%= card.label %></h2>
+      <code><%= card.value %></code>
+    </article>
+  <% }) %>
+</section>
