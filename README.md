@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # School Node API
 
 Separate backend project for the school portal. This does not touch the React static website.
@@ -60,3 +61,7 @@ GET /admin         Admin home page
 ## Notes
 
 This is ready for API development. File upload can be added later with `multer` when the client confirms upload requirements.
+=======
+# school-management-system-backend
+This is school management backend APIs.
+>>>>>>> 7bdda6914e7eb3306981dd03b960f4e36e84d3c4
