@@ -1,8 +1,15 @@
 import Employee from '../models/Employee.js';
+import { sendMail } from '../services/mail.service.js';
+import { buildPayload } from '../utils/requestPayload.js';
 
 export async function getEmployees(req, res, next) {
   try {
-    const employees = await Employee.find().sort({ createdAt: -1 });
+    const query = {};
+    if (req.query.status) query.status = req.query.status;
+    if (req.query.department) query.department = req.query.department;
+    if (req.query.role) query.role = req.query.role;
+
+    const employees = await Employee.find(query).sort({ createdAt: -1 });
     res.json({ success: true, count: employees.length, data: employees });
   } catch (error) {
     next(error);
@@ -24,7 +31,17 @@ export async function getEmployeeById(req, res, next) {
 
 export async function createEmployee(req, res, next) {
   try {
-    const employee = await Employee.create(req.body);
+    const employee = await Employee.create(buildPayload(req));
+
+    if (employee.email) {
+      await sendMail({
+        to: employee.email,
+        subject: 'Welcome to the school team',
+        text: `Dear ${employee.name}, welcome to the school team as ${employee.role}.`,
+        html: `<p>Dear <strong>${employee.name}</strong>,</p><p>Welcome to the school team as <strong>${employee.role}</strong>.</p><p>Employee No: ${employee.employeeNo}</p>`
+      });
+    }
+
     res.status(201).json({ success: true, data: employee });
   } catch (error) {
     next(error);
@@ -33,7 +50,7 @@ export async function createEmployee(req, res, next) {
 
 export async function updateEmployee(req, res, next) {
   try {
-    const employee = await Employee.findByIdAndUpdate(req.params.id, req.body, {
+    const employee = await Employee.findByIdAndUpdate(req.params.id, buildPayload(req), {
       new: true,
       runValidators: true
     });

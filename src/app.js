@@ -10,8 +10,10 @@ import adminRoutes from './routes/admin.routes.js';
 import admissionRoutes from './routes/admission.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import contactRoutes from './routes/contact.routes.js';
+import contentRoutes from './routes/content.routes.js';
 import employeeRoutes from './routes/employee.routes.js';
 import studentRoutes from './routes/student.routes.js';
+import uploadRoutes from './routes/upload.routes.js';
 import { errorHandler, notFound } from './middleware/error.middleware.js';
 
 dotenv.config();
@@ -31,6 +33,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'school-node-api' });
@@ -43,7 +46,9 @@ app.get('/', (req, res) => {
       { label: 'Students API', value: '/api/students' },
       { label: 'Employees API', value: '/api/employees' },
       { label: 'Admissions API', value: '/api/admissions' },
-      { label: 'Contact API', value: '/api/contact' }
+      { label: 'Contact API', value: '/api/contact' },
+      { label: 'Upload API', value: '/api/uploads' },
+      { label: 'Dynamic Content API', value: '/api/content/notices' }
     ]
   });
 });
@@ -54,6 +59,8 @@ app.use('/api/students', studentRoutes);
 app.use('/api/employees', employeeRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/admissions', admissionRoutes);
+app.use('/api/content', contentRoutes);
+app.use('/api/uploads', uploadRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

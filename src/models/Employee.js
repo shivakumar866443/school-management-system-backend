@@ -1,5 +1,17 @@
 import mongoose from 'mongoose';
 
+const fileSchema = new mongoose.Schema(
+  {
+    fieldName: String,
+    originalName: String,
+    fileName: String,
+    mimeType: String,
+    size: Number,
+    url: String
+  },
+  { _id: false }
+);
+
 const employeeSchema = new mongoose.Schema(
   {
     employeeNo: { type: String, required: true, unique: true, trim: true },
@@ -10,7 +22,9 @@ const employeeSchema = new mongoose.Schema(
     email: { type: String, trim: true },
     experience: { type: String, trim: true },
     status: { type: String, default: 'Active' },
-    joiningDate: Date
+    joiningDate: Date,
+    extraFields: { type: mongoose.Schema.Types.Mixed, default: {} },
+    files: [fileSchema]
   },
   { timestamps: true }
 );

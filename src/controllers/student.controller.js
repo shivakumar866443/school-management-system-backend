@@ -1,8 +1,13 @@
 import Student from '../models/Student.js';
+import { buildPayload } from '../utils/requestPayload.js';
 
 export async function getStudents(req, res, next) {
   try {
-    const students = await Student.find().sort({ createdAt: -1 });
+    const query = {};
+    if (req.query.status) query.status = req.query.status;
+    if (req.query.grade) query.grade = req.query.grade;
+
+    const students = await Student.find(query).sort({ createdAt: -1 });
     res.json({ success: true, count: students.length, data: students });
   } catch (error) {
     next(error);
@@ -24,7 +29,7 @@ export async function getStudentById(req, res, next) {
 
 export async function createStudent(req, res, next) {
   try {
-    const student = await Student.create(req.body);
+    const student = await Student.create(buildPayload(req));
     res.status(201).json({ success: true, data: student });
   } catch (error) {
     next(error);
@@ -33,7 +38,7 @@ export async function createStudent(req, res, next) {
 
 export async function updateStudent(req, res, next) {
   try {
-    const student = await Student.findByIdAndUpdate(req.params.id, req.body, {
+    const student = await Student.findByIdAndUpdate(req.params.id, buildPayload(req), {
       new: true,
       runValidators: true
     });

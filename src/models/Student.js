@@ -1,5 +1,17 @@
 import mongoose from 'mongoose';
 
+const fileSchema = new mongoose.Schema(
+  {
+    fieldName: String,
+    originalName: String,
+    fileName: String,
+    mimeType: String,
+    size: Number,
+    url: String
+  },
+  { _id: false }
+);
+
 const studentSchema = new mongoose.Schema(
   {
     admissionNo: { type: String, required: true, unique: true, trim: true },
@@ -12,6 +24,8 @@ const studentSchema = new mongoose.Schema(
     attendance: { type: Number, default: 0 },
     marks: { type: Number, default: 0 },
     status: { type: String, default: 'Active' },
+    extraFields: { type: mongoose.Schema.Types.Mixed, default: {} },
+    files: [fileSchema],
     history: [
       {
         title: String,

@@ -1,9 +1,18 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import { createContactMessage } from '../controllers/contact.controller.js';
+import {
+  createContactMessage,
+  deleteContactMessage,
+  getContactMessageById,
+  getContactMessages,
+  updateContactMessage
+} from '../controllers/contact.controller.js';
+import { adminOnly, protect } from '../middleware/auth.middleware.js';
 
 const router = Router();
 
+router.get('/', protect, adminOnly, getContactMessages);
+router.get('/:id', protect, adminOnly, getContactMessageById);
 router.post(
   '/',
   [
@@ -13,5 +22,7 @@ router.post(
   ],
   createContactMessage
 );
+router.put('/:id', protect, adminOnly, updateContactMessage);
+router.delete('/:id', protect, adminOnly, deleteContactMessage);
 
 export default router;
